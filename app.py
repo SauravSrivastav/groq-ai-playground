@@ -12,12 +12,12 @@ from datasets import load_dataset
 from torch.nn.attention import SDPBackend, sdpa_kernel
 
 # Set page configuration
-st.set_page_config(page_icon="🤖", layout="wide", page_title="Enhanced Groq AI Playground")
+st.set_page_config(page_icon="🤖", layout="wide", page_title="Groq AI Playground")
 
 # Page title and description
-st.title("Enhanced Groq AI Playground")
+st.title("Groq AI Playground")
 st.markdown("""
-    Welcome to the Enhanced Groq AI Playground! Explore multiple language models and experience the power of Groq's API.
+    Welcome to the Groq AI Playground! Explore multiple language models and experience the power of Groq's API.
     Select a model, adjust parameters, and start interacting with advanced AI models for text generation.
 """)
 
