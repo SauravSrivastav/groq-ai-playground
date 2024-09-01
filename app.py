@@ -43,6 +43,44 @@ models = {
     "mixtral-8x7b-32768": {"name": "Mixtral 8x7B", "tokens": 32768, "developer": "Mistral"},
 }
 
+# Function to convert chat history to plain text
+def chat_to_text(messages):
+    text = "Groq AI Playground - Chat Export\n\n"
+    for msg in messages:
+        text += f"{msg['role'].capitalize()}: {msg['content']}\n\n"
+    return text
+
+# Function to convert chat history to PDF
+def chat_to_pdf(messages):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, txt="Groq AI Playground - Chat Export", ln=1, align='C')
+    for msg in messages:
+        pdf.set_font("Arial", 'B', size=10)
+        pdf.cell(200, 10, txt=f"{msg['role'].capitalize()}:", ln=1)
+        pdf.set_font("Arial", size=10)
+        pdf.multi_cell(0, 10, txt=msg['content'].encode('latin-1', 'replace').decode('latin-1'))
+        pdf.ln(5)
+    return pdf.output(dest='S').encode('latin-1')
+
+# Function to create a download link
+def get_download_link(file_content, file_name, file_format):
+    if file_format in ['txt', 'json']:
+        b64 = base64.b64encode(file_content.encode('utf-8')).decode()
+    else:  # pdf
+        b64 = base64.b64encode(file_content).decode()
+
+    mime_types = {
+        'txt': 'text/plain',
+        'json': 'application/json',
+        'pdf': 'application/pdf'
+    }
+    mime = mime_types.get(file_format, 'application/octet-stream')
+
+    href = f'<a href="data:{mime};base64,{b64}" download="{file_name}">Download {file_format.upper()} File</a>'
+    return href
+
 # Sidebar for configuration
 with st.sidebar:
     st.markdown("### Configuration")
@@ -133,44 +171,6 @@ with st.sidebar:
             )
         except Exception as e:
             st.error(f"An error occurred during export: {str(e)}")
-
-# Function to convert chat history to plain text
-def chat_to_text(messages):
-    text = "Groq AI Playground - Chat Export\n\n"
-    for msg in messages:
-        text += f"{msg['role'].capitalize()}: {msg['content']}\n\n"
-    return text
-
-# Function to convert chat history to PDF
-def chat_to_pdf(messages):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt="Groq AI Playground - Chat Export", ln=1, align='C')
-    for msg in messages:
-        pdf.set_font("Arial", 'B', size=10)
-        pdf.cell(200, 10, txt=f"{msg['role'].capitalize()}:", ln=1)
-        pdf.set_font("Arial", size=10)
-        pdf.multi_cell(0, 10, txt=msg['content'])
-        pdf.ln(5)
-    return pdf.output(dest='S').encode('latin-1')
-
-# Function to create a download link
-def get_download_link(file_content, file_name, file_format):
-    if file_format in ['txt', 'json']:
-        b64 = base64.b64encode(file_content.encode('utf-8')).decode()
-    else:  # pdf
-        b64 = base64.b64encode(file_content).decode()
-
-    mime_types = {
-        'txt': 'text/plain',
-        'json': 'application/json',
-        'pdf': 'application/pdf'
-    }
-    mime = mime_types.get(file_format, 'application/octet-stream')
-
-    href = f'<a href="data:{mime};base64,{b64}" download="{file_name}">Download {file_format.upper()} File</a>'
-    return href
 
 # Detect model change and clear chat history if model has changed
 if st.session_state.selected_model != model_option:
