@@ -1,6 +1,7 @@
-# groq-ai-playground 🤖
 
-groq-ai-playground is an interactive platform to explore and experiment with various AI models powered by Groq. Customize parameters, chat with AI, and export your conversations in multiple formats.
+# Groq AI Playground 🤖
+
+Groq AI Playground is an interactive platform to explore and experiment with various AI models powered by Groq. Customize parameters, chat with AI, and export your conversations in multiple formats.
 
 ## Features ✨
 
@@ -61,7 +62,7 @@ groq-ai-playground is an interactive platform to explore and experiment with var
 ### Main Application (`app.py`)
 
 #### Imports and Setup
-```python
+```python:conversational-chatbot-groq/app.py
 import os
 import streamlit as st
 from typing import Generator
@@ -80,7 +81,7 @@ from torch.nn.attention import SDPBackend, sdpa_kernel
 - Set up the main function for the Streamlit application.
 
 #### Sidebar Configuration
-```python
+```python:conversational-chatbot-groq/app.py
 with st.sidebar:
     st.markdown("### Configuration")
     api_key = st.text_input("Enter your Groq API Key:", type="password", placeholder="Your API Key")
@@ -103,7 +104,7 @@ with st.sidebar:
 - Model selection and parameter adjustment.
 
 #### Chat Interaction
-```python
+```python:conversational-chatbot-groq/app.py
 if interaction_type == "Text Chat":
     if prompt := st.chat_input("Enter your prompt here..."):
         if not st.session_state.api_key:
@@ -140,7 +141,7 @@ if interaction_type == "Text Chat":
 
 ## Contributing 🤝
 
-Contributions are welcome! If you'd like to improve groq-ai-playground, please fork the repository and submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
+Contributions are welcome! If you'd like to improve Groq AI Playground, please fork the repository and submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License 📄
 
